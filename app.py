@@ -41,6 +41,7 @@ if page=="Recommended Books":
         submit_button = st.form_submit_button(label='Submit')
     
         if submit_button:
+            similar_items = []
                     # Check if input is empty
             if not input:
                 st.warning("Please write a book name.")
@@ -53,38 +54,17 @@ if page=="Recommended Books":
                     index = np.where(pt.index == user_input)[0][0]
                     similar_items = sorted(list(enumerate(similarity_scores[index])), key=lambda x: x[1], reverse=True)[1:6]
 
-    # Create a layout for displaying similar items
-    st.markdown("---")
-    cols = st.columns(5)  # Create 5 columns for the images
-    for i, col in zip(similar_items, cols):
-        item_index = i[0]
-        temp_df = books[books['Book-Title'] == pt.index[item_index]]
+                    # Create a layout for displaying similar items
+                    st.markdown("---")
+                    cols = st.columns(5)  # Create 5 columns for the images
+                    for i, col in zip(similar_items, cols):
+                        item_index = i[0]
+                        temp_df = books[books['Book-Title'] == pt.index[item_index]]
 
-        # Extracting the necessary information
-        image_url = temp_df['Image-URL-M'].values[0]  # Assuming there's only one unique image URL per book
-        book_title = temp_df['Book-Title'].values[0]
-        book_author = temp_df['Book-Author'].values[0]
+                        # Extracting the necessary information
+                        image_url = temp_df['Image-URL-M'].values[0]  # Assuming there's only one unique image URL per book
+                        book_title = temp_df['Book-Title'].values[0]
+                        book_author = temp_df['Book-Author'].values[0]
 
-        # Display the image and details in the column
-        col.image(image_url, caption=f"{book_title} by {book_author}", width=100)
-
-        # else:
-        #     st.text("Please Enter a book title")
-        
-        
-        
-        # if submit_button:
-    #     user_input = input
-    #     index = np.where(pt.index == user_input)[0][0]
-    #     similar_items = sorted(list(enumerate(similarity_scores[index])), key=lambda x: x[1], reverse=True)[1:5]
-
-    #     data = []
-    #     for i in similar_items:
-    #         item = []
-    #         temp_df = books[books['Book-Title'] == pt.index[i[0]]]
-    #         item.extend(list(temp_df.drop_duplicates('Book-Title')['Image-URL-M'].values))
-    #         item.extend(list(temp_df.drop_duplicates('Book-Title')['Book-Title'].values))
-    #         item.extend(list(temp_df.drop_duplicates('Book-Title')['Book-Author'].values))
-
-    #         data.append(item)
-    #     st.dataframe(data)
+                        # Display the image and details in the column
+                        col.image(image_url, caption=f"{book_title} by {book_author}", width=100)
